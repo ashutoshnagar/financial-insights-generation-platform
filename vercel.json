@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/backend/src/index.js"
+      "destination": "/api"
     }
   ],
   "functions": {
-    "backend/src/index.js": {
+    "api/index.js": {
       "maxDuration": 30
     }
   }
