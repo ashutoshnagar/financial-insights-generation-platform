@@ -8,18 +8,8 @@ const sessionStorage = require('../services/sessionStorage');
 
 const router = express.Router();
 
-// Configure multer for file upload
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadDir = path.join(__dirname, '../../uploads');
-    fs.ensureDirSync(uploadDir);
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = `${uuidv4()}-${file.originalname}`;
-    cb(null, uniqueName);
-  }
-});
+// Configure multer for file upload - Use memory storage for Vercel
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   // Accept CSV and Excel files
@@ -63,7 +53,7 @@ router.post('/', upload.array('files', 2), async (req, res) => {
 
     console.log(`📁 Processing ${req.files.length} file(s):`, req.files.map(f => f.originalname));
 
-    // Parse the uploaded files
+    // Parse the uploaded files (now they're in memory as buffers)
     const parsedData = await dataProcessor.parseFiles(req.files);
     
     // Prepare data for analysis
@@ -80,8 +70,7 @@ router.post('/', upload.array('files', 2), async (req, res) => {
       totalSessions: sessionStorage.getSessionCount()
     });
 
-    // Clean up uploaded files after processing
-    await Promise.all(req.files.map(file => fs.remove(file.path)));
+    // No need to clean up files - they're in memory
 
     res.json({
       success: true,

@@ -33,9 +33,11 @@ class DataProcessor {
   async parseExcelFile(file) {
     try {
       console.log(`📊 Parsing Excel file: ${file.originalname}`);
-      console.log(`📂 File path: ${file.path}`);
       
-      const workbook = XLSX.readFile(file.path);
+      // Handle both file path and buffer
+      const workbook = file.buffer ? 
+        XLSX.read(file.buffer, { type: 'buffer' }) : 
+        XLSX.readFile(file.path);
       const sheetNames = workbook.SheetNames;
       
       console.log(`📋 Found ${sheetNames.length} sheets:`, sheetNames);
@@ -140,7 +142,12 @@ class DataProcessor {
     return new Promise((resolve, reject) => {
       const results = [];
       
-      fs.createReadStream(file.path)
+      // Handle both file path and buffer
+      const stream = file.buffer ? 
+        require('stream').Readable.from(file.buffer) :
+        fs.createReadStream(file.path);
+      
+      stream
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', () => {
@@ -333,7 +340,7 @@ class DataProcessor {
         if (columnName.toLowerCase().includes('roi') || 
             columnName.toLowerCase().includes('rate') ||
             columnName.toLowerCase().includes('interest')) {
-          console.log(`📊 ROI conversion: ${value} (${numericValue}%) → ${numericValue / 100}`);
+       //   console.log(`📊 ROI conversion: ${value} (${numericValue}%) → ${numericValue / 100}`);
           return numericValue / 100;
         }
         
@@ -346,7 +353,7 @@ class DataProcessor {
         columnName.toLowerCase().includes('roi') || 
         columnName.toLowerCase().includes('rate') ||
         columnName.toLowerCase().includes('interest'))) {
-      console.log(`📊 ROI conversion: ${value}% → ${value / 100}`);
+    //  console.log(`📊 ROI conversion: ${value}% → ${value / 100}`);
       return value / 100;
     }
 
