@@ -11,6 +11,7 @@
     "@visx/group": "^3.12.0",
     "@visx/hierarchy": "^3.12.0",
     "@visx/shape": "^3.12.0",
+    "@vitejs/plugin-react": "^4.0.3",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
@@ -24,23 +25,22 @@
     "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.14.2",
-    "recharts": "^2.8.0"
+    "recharts": "^2.8.0",
+    "vite": "^4.4.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.195",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.0.3",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "vite": "^4.4.5"
+    "eslint-plugin-react-hooks": "^4.6.0"
   },
   "scripts": {
-    "dev": "npx vite",
-    "build": "npx vite build",
-    "vercel-build": "npx vite build",
-    "preview": "npx vite preview",
+    "dev": "vite",
+    "build": "vite build",
+    "vercel-build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "browserslist": {
