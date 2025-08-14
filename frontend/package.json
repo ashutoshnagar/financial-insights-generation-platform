@@ -37,10 +37,10 @@
     "vite": "^4.4.5"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "vercel-build": "vite build",
-    "preview": "vite preview",
+    "dev": "npx vite",
+    "build": "npx vite build",
+    "vercel-build": "npx vite build",
+    "preview": "npx vite preview",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "browserslist": {
