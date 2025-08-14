@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // Use relative URLs in production (empty string), absolute in development
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+// In production (Vercel), use relative URLs. In development, use localhost
 const BASE_PATH = API_BASE_URL ? `${API_BASE_URL}/api` : '/api';
 
 // Create axios instance with default config
