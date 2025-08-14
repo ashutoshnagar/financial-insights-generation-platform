@@ -367,7 +367,7 @@ const DecisionTreeVisualizationV2 = ({ treeData, analysisType, fullScreen, onFul
     );
   };
 
-  // Enhanced connection lines with curves
+  // Enhanced connection lines with curves and percentage labels
   const renderConnections = (node) => {
     const connections = [];
     
@@ -378,10 +378,12 @@ const DecisionTreeVisualizationV2 = ({ treeData, analysisType, fullScreen, onFul
         const endX = child.x - nodeConfig.width / 2;
         const endY = child.y;
         const midX = (startX + endX) / 2;
+        const midY = (startY + endY) / 2;
         
         // Create curved path
         const path = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
         
+        // Add the connection line
         connections.push(
           <path
             key={`path-${node.nodeId}-${child.nodeId}`}
@@ -393,6 +395,41 @@ const DecisionTreeVisualizationV2 = ({ treeData, analysisType, fullScreen, onFul
             opacity="0.6"
           />
         );
+        
+        // Add percentage label on the edge
+        const percentOnParent = child.originalData?.metrics?.percentOnParent || 0;
+        if (percentOnParent !== 0) {
+          connections.push(
+            <g key={`label-${node.nodeId}-${child.nodeId}`}>
+              {/* Background rectangle for better readability */}
+              <rect
+                x={midX - 30}
+                y={midY - 10}
+                width="60"
+                height="20"
+                fill="white"
+                stroke="#e5e7eb"
+                strokeWidth="1"
+                rx="4"
+                opacity="0.95"
+              />
+              {/* Percentage text */}
+              <text
+                x={midX}
+                y={midY + 4}
+                textAnchor="middle"
+                style={{
+                  fontSize: '13px',
+                  fontFamily: 'Segoe UI, Tahoma, sans-serif',
+                  fontWeight: '600',
+                  fill: '#475569'
+                }}
+              >
+                {percentOnParent.toFixed(1)}%
+              </text>
+            </g>
+          );
+        }
         
         // Recursively render child connections
         connections.push(...renderConnections(child));
